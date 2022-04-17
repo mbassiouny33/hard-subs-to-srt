@@ -28,7 +28,7 @@ def main():
 
 def extract_srt(video_file, srt_file, lang):
     video = FileVideoStream(video_file)
-    first_frame_pos = 2500
+    first_frame_pos = 0
     video.stream.set(cv2.CAP_PROP_POS_FRAMES, first_frame_pos)
 
     if video.stream.isOpened() == False:
