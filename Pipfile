@@ -7,7 +7,7 @@ name = "pypi"
 pillow = "*"
 pytesseract = "*"
 imagehash = "*"
-opencv-python = "*"
+opencv-python-headless = "*"
 numpy = "*"
 imutils = "*"
 
