@@ -20,11 +20,13 @@ def main():
         'video_file', help='the path to a video file that has hardcoded subtitles')
     parser.add_argument(
         'srt_file', help='where to put the resulting SRT file, will overwrite if it is already there')
+    parser.add_argument(
+        'lang', help='lang of hardcoded text')
     args = parser.parse_args()
-    extract_srt(args.video_file, args.srt_file)
+    extract_srt(args.video_file, args.srt_file, args.lang)
 
 
-def extract_srt(video_file, srt_file):
+def extract_srt(video_file, srt_file, lang):
     video = FileVideoStream(video_file)
     first_frame_pos = 2500
     video.stream.set(cv2.CAP_PROP_POS_FRAMES, first_frame_pos)
@@ -34,7 +36,7 @@ def extract_srt(video_file, srt_file):
         return
 
     sys.stdout = FileAndTerminalStream(srt_file)
-    convert_frames_to_srt(video, first_frame_pos)
+    convert_frames_to_srt(video, first_frame_pos,lang)
     sys.stdout = sys.stdout.terminal
 
     cv2.destroyAllWindows()
@@ -55,7 +57,7 @@ class FileAndTerminalStream(object):
         pass
 
 
-def convert_frames_to_srt(video, first_frame_pos):
+def convert_frames_to_srt(video, first_frame_pos,lang):
     prev_frame_hash = NO_SUBTILE_FRAME_HASH
     frame_number = first_frame_pos
     reader = SubtitleReader()
@@ -87,7 +89,7 @@ def convert_frames_to_srt(video, first_frame_pos):
                 # no need to use tesseract when the input is a white rectangle
                 change = EmptySubtitleChange(timestamp)
             else:
-                change = SubtitleChange(monochrome_frame, timestamp)
+                change = SubtitleChange(monochrome_frame, timestamp,lang)
             reader.provide_material(change)
 
         prev_frame_hash = frame_hash
@@ -146,15 +148,16 @@ def print_line(index, start_time, end_time, text):
 
 
 class SubtitleChange:
-    def __init__(self, frame, timestamp):
+    def __init__(self, frame, timestamp,lang):
         self.frame = frame
         self.timestamp = timestamp
+        self.lang = lang
 
     def read_subtitle(self):
         # Page segmentation mode (PSM) 13 means "Raw line. Treat the image as a
         # single text line, bypassing hacks that are Tesseract-specific."
         line = pytesseract.image_to_string(
-            self.frame, lang='chi_sim', config='--psm 13')
+            self.frame, lang=self.lang, config='--psm 13')
         return clean_up_tesseract_output(line)
 
 
