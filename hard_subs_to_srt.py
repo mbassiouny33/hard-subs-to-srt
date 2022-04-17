@@ -238,6 +238,7 @@ def millis_to_srt_timestamp(total_millis):
 
 
 def get_millis_for_frame(video, frame_number):
+    print (video.stream.get(cv2.CAP_PROP_FPS))
     return 1000.0 * frame_number / video.stream.get(cv2.CAP_PROP_FPS)
 
 
