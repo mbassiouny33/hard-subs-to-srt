@@ -82,8 +82,8 @@ def convert_frames_to_srt(video, first_frame_pos,lang):
         #change this shit to crop frame properly
         cropped_frame = frame#[1600:2160, 820:3020]
         monochrome_frame = to_monochrome_subtitle_frame(cropped_frame)
-        cv2.imshow('Orignal', cv2.resize(frame, preview_size))
-        cv2.imshow('Processed image for tesseract', monochrome_frame)
+        # cv2.imshow('Orignal', cv2.resize(frame, preview_size))
+        # cv2.imshow('Processed image for tesseract', monochrome_frame)
 
         textImage = Image.fromarray(monochrome_frame)
         frame_hash = imagehash.average_hash(textImage, 32)
