@@ -78,9 +78,9 @@ def convert_frames_to_srt(video, first_frame_pos,lang):
 
     while video.more():
         frame = video.read()
-        print ("######   #####",len(frame))
+        # print ("######   #####",len(frame))
         #change this shit to crop frame properly
-        cropped_frame = frame#[1600:2160, 820:3020]
+        cropped_frame = frame[100:1179, 419:719]
         monochrome_frame = to_monochrome_subtitle_frame(cropped_frame)
         # cv2.imshow('Orignal', cv2.resize(frame, preview_size))
         # cv2.imshow('Processed image for tesseract', monochrome_frame)
@@ -238,7 +238,7 @@ def millis_to_srt_timestamp(total_millis):
 
 
 def get_millis_for_frame(video, frame_number):
-    print (video.stream.get(cv2.CAP_PROP_FPS))
+    # print (video.stream.get(cv2.CAP_PROP_FPS))
     return 1000.0 * frame_number / video.stream.get(cv2.CAP_PROP_FPS)
 
 
