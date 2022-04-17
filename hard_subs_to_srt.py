@@ -65,7 +65,9 @@ def convert_frames_to_srt(video, first_frame_pos,lang):
     keyboard = Keyboard()
 
     width = video.stream.get(cv2.CAP_PROP_FRAME_WIDTH)
+    
     height = video.stream.get(cv2.CAP_PROP_FRAME_HEIGHT)
+    print ("######   #####",width, height)
     preview_size = limit_size((width, height), (1280, 720))
 
     video.start()
@@ -73,7 +75,7 @@ def convert_frames_to_srt(video, first_frame_pos,lang):
 
     while video.more():
         frame = video.read()
-        print ("########",len(frame))
+        
         cropped_frame = frame[1600:2160, 820:3020]
         monochrome_frame = to_monochrome_subtitle_frame(cropped_frame)
         cv2.imshow('Orignal', cv2.resize(frame, preview_size))
