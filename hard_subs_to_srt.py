@@ -28,6 +28,8 @@ def main():
 
 def extract_srt(video_file, srt_file, lang):
     video = FileVideoStream(video_file)
+    
+    #this line was set to 2500 because the idiot he wrote the script hardocded some skip!
     first_frame_pos = 0
     video.stream.set(cv2.CAP_PROP_POS_FRAMES, first_frame_pos)
 
@@ -67,7 +69,7 @@ def convert_frames_to_srt(video, first_frame_pos,lang):
     width = video.stream.get(cv2.CAP_PROP_FRAME_WIDTH)
     
     height = video.stream.get(cv2.CAP_PROP_FRAME_HEIGHT)
-    print ("######   #####",width, height)
+    # print ("######   #####",width, height)
     preview_size = limit_size((width, height), (1920, 1080))
 
     video.start()
@@ -76,7 +78,8 @@ def convert_frames_to_srt(video, first_frame_pos,lang):
     while video.more():
         frame = video.read()
         print ("######   #####",len(frame))
-        cropped_frame = frame[1600:2160, 820:3020]
+        #change this shit to crop frame properly
+        cropped_frame = frame#[1600:2160, 820:3020]
         monochrome_frame = to_monochrome_subtitle_frame(cropped_frame)
         cv2.imshow('Orignal', cv2.resize(frame, preview_size))
         cv2.imshow('Processed image for tesseract', monochrome_frame)
