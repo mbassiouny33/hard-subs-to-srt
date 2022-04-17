@@ -70,7 +70,7 @@ def convert_frames_to_srt(video, first_frame_pos,lang):
     
     height = video.stream.get(cv2.CAP_PROP_FRAME_HEIGHT)
     # print ("######   #####",width, height)
-    preview_size = limit_size((width, height), (1920, 1080))
+    preview_size = limit_size((width, height), (width,height ))
 
     video.start()
     reader.start()
